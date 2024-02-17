@@ -24,9 +24,12 @@ def main():
         # Apply the background subtractor
         fg_mask = background_subtractor.apply(blur)
 
-        # Find contours in the foreground mask
+        # Apply threshold to the foreground mask
+        _, thresh = cv2.threshold(fg_mask, 190, 255, cv2.THRESH_BINARY)
+
+        # Find contours in the thresholded mask
         contours, _ = cv2.findContours(
-            fg_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         # Draw rectangles around the contours on the original frame
         for contour in contours:
@@ -36,7 +39,7 @@ def main():
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
         # Display the original frame with rectangles
-        cv2.imshow('Webcam Stream with MOG2', frame)
+        cv2.imshow('Webcam Stream with MOG2 and Threshold', frame)
 
         # Break the loop when 'q' is pressed
         if cv2.waitKey(1) & 0xFF == ord('q'):
