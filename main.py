@@ -12,16 +12,22 @@ cap = cv2.VideoCapture(0)
 while True:
     _, frame = cap.read()
 
-    # Convert the frame to HSV color space
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+# Define the midpoint color
+    midpoint_color = np.array([184, 191, 190], dtype="uint8")
 
-    # Define range of color to detect
-    # Update these values based on the color of your glove or object
-    lower_color = np.array([0, 48, 80], dtype="uint8")
-    upper_color = np.array([20, 255, 255], dtype="uint8")
+# Define the scalar value to create a range around the midpoint
+    scalar = 50  # Adjust this value as needed
+
+# Ensure that we do not go below 0 or above 255 for any color component
+    lower_color = np.clip(midpoint_color - scalar, 0, 255)
+    upper_color = np.clip(midpoint_color + scalar, 0, 255)
+
+# Now, lower_color and upper_color are set based on the midpoint_color +/- scalar
+    print("Lower Color Bound:", lower_color)
+    print("Upper Color Bound:", upper_color)
 
     # Create a mask for color detection and perform bitwise and
-    mask = cv2.inRange(hsv, lower_color, upper_color)
+    mask = cv2.inRange(frame, lower_color, upper_color)
     res = cv2.bitwise_and(frame, frame, mask=mask)
 
     # Find contours in the mask
