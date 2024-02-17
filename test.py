@@ -3,12 +3,12 @@ import numpy as np
 
 # Minimum and maximum area thresholds for filtering
 MIN_AREA = 100
-MAX_AREA = 5000
+MAX_AREA = 1000
 
 blue = 190
 green = 191
 red = 184
-filter = 10
+filter = 50
 
 
 def color(input):

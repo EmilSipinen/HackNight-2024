@@ -19,7 +19,7 @@ def main():
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # Apply Gaussian blur
-        blur = cv2.GaussianBlur(gray, (5, 5), 0)
+        blur = cv2.GaussianBlur(gray, (3, 3), 0)
 
         # Apply the background subtractor
         fg_mask = background_subtractor.apply(blur)
