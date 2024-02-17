@@ -16,7 +16,7 @@ while True:
     midpoint_color = np.array([184, 191, 190], dtype="uint8")
 
 # Define the scalar value to create a range around the midpoint
-    scalar = 50  # Adjust this value as needed
+    scalar = 40  # Adjust this value as needed
 
 # Ensure that we do not go below 0 or above 255 for any color component
     lower_color = np.clip(midpoint_color - scalar, 0, 255)
