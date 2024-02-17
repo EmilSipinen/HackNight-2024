@@ -20,8 +20,7 @@ while True:
     _, thresh = cv2.threshold(fg_mask, 50, 255, cv2.THRESH_BINARY)
 
     # Find contours
-    contours, _ = cv2.findContours(
-        thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     # Draw rectangles around moving objects
     for contour in contours:
@@ -29,11 +28,11 @@ while True:
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
     # Display the resulting frame
-    cv2.imshow('Frame', frame)
-    cv2.imshow('Foreground Mask', fg_mask)
+    cv2.imshow("Frame", frame)
+    cv2.imshow("Foreground Mask", fg_mask)
 
     # Break the loop when 'q' is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 
 # Release the capture and destroy all windows
