@@ -5,6 +5,23 @@ import numpy as np
 MIN_AREA = 100
 MAX_AREA = 5000
 
+blue  = 190
+green = 191
+red   = 184
+filter = 10
+
+def color(input):
+    if input >= 255:
+        return 255
+    elif input <= 0:
+        return 0
+    else:
+        return input
+
+# Define the color range for filtering
+lower_color = np.array([color(blue - filter), color(green - filter), color(red - filter)])
+upper_color = np.array([color(blue + filter), color(green + filter), color(red + filter)])
+
 # Start video capture
 cap = cv2.VideoCapture(0)
 
@@ -32,9 +49,15 @@ while True:
         # Calculate area of contour
         area = cv2.contourArea(contour)
         if MIN_AREA < area < MAX_AREA:
-            # Draw bounding box if area is within specified range
-            x, y, w, h = cv2.boundingRect(contour)
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            # Filter contours based on color
+            mask = np.zeros(frame.shape[:2], dtype="uint8")
+            cv2.drawContours(mask, [contour], -1, 255, -1)
+            mean_color = cv2.mean(frame, mask=mask)[:3]
+
+            if all(lower_color <= mean_color) and all(mean_color <= upper_color):
+                # Draw bounding box if area is within specified range and color matches
+                x, y, w, h = cv2.boundingRect(contour)
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
     # Display the resulting frame
     cv2.imshow('Frame', frame)
